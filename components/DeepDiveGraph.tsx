@@ -172,24 +172,26 @@ export default function DeepDiveGraph({ storyId }: Props) {
       overflow: 'hidden',
     }}>
 
-      {/* ── Header ──────────────────────────────────────── */}
-      <div style={{
-        position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 50, padding: isMobile ? '6px 16px' : '10px 36px',
-        background: 'rgba(8,5,2,0.88)',
-        border: '1px solid rgba(196,150,10,0.35)',
-        borderTop: 'none', borderRadius: '0 0 14px 14px',
-        backdropFilter: 'blur(10px)',
-        textAlign: 'center', pointerEvents: 'none',
-      }}>
-        <h1 style={{
-          margin: 0, fontSize: isMobile ? 18 : 26, fontWeight: 700,
-          color: '#e8c870', letterSpacing: '0.12em',
-          textShadow: '0 0 20px rgba(232,184,48,0.5)',
+      {/* ── Header — desktop only ───────────────────────── */}
+      {!isMobile && (
+        <div style={{
+          position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 50, padding: '10px 36px',
+          background: 'rgba(8,5,2,0.88)',
+          border: '1px solid rgba(196,150,10,0.35)',
+          borderTop: 'none', borderRadius: '0 0 14px 14px',
+          backdropFilter: 'blur(10px)',
+          textAlign: 'center', pointerEvents: 'none',
         }}>
-          His-story
-        </h1>
-      </div>
+          <h1 style={{
+            margin: 0, fontSize: 26, fontWeight: 700,
+            color: '#e8c870', letterSpacing: '0.12em',
+            textShadow: '0 0 20px rgba(232,184,48,0.5)',
+          }}>
+            His-story
+          </h1>
+        </div>
+      )}
 
       {/* ── Navigation buttons ───────────────────────────── */}
       <div style={{ position: 'fixed', top: isMobile ? 10 : 20, left: isMobile ? 8 : 20, zIndex: 50, display: 'flex', gap: 6 }}>
@@ -229,7 +231,7 @@ export default function DeepDiveGraph({ storyId }: Props) {
       <div style={{
         flex: isMobile ? 'none' : 1,
         height: isMobile ? '45vh' : '100%',
-        paddingTop: isMobile ? 48 : 72,
+        paddingTop: isMobile ? 0 : 72,
         boxSizing: 'border-box',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
@@ -238,7 +240,7 @@ export default function DeepDiveGraph({ storyId }: Props) {
           style={{
             width: '100%', height: '100%',
             maxWidth: isMobile ? '100vw' : 'calc(100vh - 152px)',
-            maxHeight: isMobile ? 'calc(45vh - 48px)' : 'calc(100vh - 152px)',
+            maxHeight: isMobile ? '45vh' : 'calc(100vh - 152px)',
           }}
           onClick={() => setClickedEdge(null)}
         >
