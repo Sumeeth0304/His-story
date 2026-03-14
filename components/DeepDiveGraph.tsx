@@ -229,14 +229,16 @@ export default function DeepDiveGraph({ storyId }: Props) {
       <div style={{
         flex: isMobile ? 'none' : 1,
         height: isMobile ? '45vh' : '100%',
+        paddingTop: isMobile ? 48 : 72,
+        boxSizing: 'border-box',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         <svg
           viewBox={`${-VIEW} ${-VIEW} ${VIEW * 2} ${VIEW * 2}`}
           style={{
             width: '100%', height: '100%',
-            maxWidth: isMobile ? '100vw' : 'calc(100vh - 80px)',
-            maxHeight: isMobile ? '45vh' : 'calc(100vh - 80px)',
+            maxWidth: isMobile ? '100vw' : 'calc(100vh - 152px)',
+            maxHeight: isMobile ? 'calc(45vh - 48px)' : 'calc(100vh - 152px)',
           }}
           onClick={() => setClickedEdge(null)}
         >
