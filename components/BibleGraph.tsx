@@ -138,6 +138,7 @@ export default function BibleGraph() {
     links: freshILinks(),
   })
   const [isMobile, setIsMobile] = useState(false)
+  const [showList, setShowList] = useState(false)
 
   const selectedRef  = useRef<BibleStory | null>(null)
   const hoveredRef   = useRef<string     | null>(null)
@@ -452,12 +453,51 @@ export default function BibleGraph() {
         )}
       </div>
 
-      {/* Sidebar hidden on mobile */}
-      {!isMobile && (
+      {/* Mobile: hamburger toggle for story list */}
+      {isMobile && (
+        <button
+          onClick={() => setShowList((v) => !v)}
+          style={{
+            position: 'fixed',
+            top: 14,
+            left: 12,
+            zIndex: 60,
+            width: 36,
+            height: 36,
+            borderRadius: 8,
+            background: 'rgba(8,5,2,0.90)',
+            border: '1px solid rgba(196,150,10,0.45)',
+            color: '#c4960a',
+            fontSize: showList ? 16 : 18,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 0 12px rgba(0,0,0,0.6)',
+          }}
+        >
+          {showList ? '✕' : '☰'}
+        </button>
+      )}
+
+      {/* Mobile: backdrop to close list */}
+      {isMobile && showList && (
+        <div
+          onClick={() => setShowList(false)}
+          style={{ position: 'fixed', inset: 0, zIndex: 45, background: 'rgba(0,0,0,0.45)' }}
+        />
+      )}
+
+      {/* Sidebar: always on desktop, toggled on mobile */}
+      {(!isMobile || showList) && (
         <StoryList
           stories={bibleStories}
           selectedId={selectedStory?.id ?? null}
-          onSelect={selectStory}
+          onSelect={(story) => {
+            selectStory(story)
+            if (isMobile) setShowList(false)
+          }}
         />
       )}
 

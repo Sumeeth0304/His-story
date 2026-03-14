@@ -28,14 +28,17 @@ export default function StoryPanel({ story, onClose, isMobile = false }: StoryPa
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [panelHeight, setPanelHeight] = useState(72) // vh, mobile only
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const prevStoryId = useRef<string | null>(null)
+  const dragRef = useRef<{ startY: number; startH: number } | null>(null)
 
   useEffect(() => {
     if (story && story.id !== prevStoryId.current) {
       setMessages([])
       setInput('')
+      setPanelHeight(72)
       prevStoryId.current = story.id
     }
   }, [story])
@@ -49,6 +52,30 @@ export default function StoryPanel({ story, onClose, isMobile = false }: StoryPa
       setTimeout(() => inputRef.current?.focus(), 300)
     }
   }, [story])
+
+  const handleDragStart = (e: React.TouchEvent) => {
+    dragRef.current = { startY: e.touches[0].clientY, startH: panelHeight }
+  }
+
+  const handleDragMove = (e: React.TouchEvent) => {
+    if (!dragRef.current) return
+    const dy = e.touches[0].clientY - dragRef.current.startY
+    const newH = dragRef.current.startH - (dy / window.innerHeight) * 100
+    setPanelHeight(Math.max(18, Math.min(92, newH)))
+  }
+
+  const handleDragEnd = () => {
+    if (!dragRef.current) return
+    dragRef.current = null
+    if (panelHeight < 28) {
+      onClose()
+      setPanelHeight(72)
+    } else if (panelHeight < 52) {
+      setPanelHeight(40)
+    } else {
+      setPanelHeight(72)
+    }
+  }
 
   const sendMessage = useCallback(async () => {
     if (!input.trim() || !story || loading) return
@@ -128,7 +155,7 @@ export default function StoryPanel({ story, onClose, isMobile = false }: StoryPa
     bottom: 0,
     left: 0,
     width: '100%',
-    height: '72vh',
+    height: `${panelHeight}vh`,
     zIndex: 50,
     display: 'flex',
     flexDirection: 'column',
@@ -162,8 +189,13 @@ export default function StoryPanel({ story, onClose, isMobile = false }: StoryPa
     <div style={panelStyle}>
       {/* Drag handle — mobile only */}
       {isMobile && (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 4px', flexShrink: 0 }}>
-          <div style={{ width: 36, height: 4, borderRadius: 2, background: `${accent}50` }} />
+        <div
+          onTouchStart={handleDragStart}
+          onTouchMove={handleDragMove}
+          onTouchEnd={handleDragEnd}
+          style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 6px', flexShrink: 0, cursor: 'ns-resize', touchAction: 'none' }}
+        >
+          <div style={{ width: 40, height: 5, borderRadius: 3, background: `${accent}60` }} />
         </div>
       )}
       {story && (
