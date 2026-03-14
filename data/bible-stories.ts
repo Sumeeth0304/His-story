@@ -1,0 +1,781 @@
+export interface BibleStory {
+  id: string
+  title: string
+  era: string
+  period: string
+  scripture: string
+  summary: string
+  connections: string[]
+  position: { x: number; y: number }
+  importance: 'major' | 'normal'
+}
+
+export const ERA_COLORS: Record<string, string> = {
+  Creation:             '#f0c030',   // warm gold
+  Patriarchs:           '#e08020',   // amber
+  Exodus:               '#e04040',   // crimson
+  'Conquest & Judges':  '#60b030',   // lime green
+  Kingdom:              '#4070d0',   // royal blue
+  'Prophets & Exile':   '#9040c0',   // deep purple
+  'New Testament':      '#30b0a0',   // teal
+}
+
+export const ERA_ORDER = [
+  'Creation',
+  'Patriarchs',
+  'Exodus',
+  'Conquest & Judges',
+  'Kingdom',
+  'Prophets & Exile',
+  'New Testament',
+]
+
+// ─────────────────────────────────────────────────────────────
+//  Layout: concentric rings, one per era.
+//  Center: (2000, 2000)
+//  Radii:  Creation=200, Patriarchs=430, Exodus=680,
+//          Conquest=950, Kingdom=1220, Prophets=1520, NT=1850
+//  Nodes distributed evenly around each ring, starting at top
+//  (270°) with a slight per-ring angular offset so nodes don't
+//  stack radially into straight lines.
+// ─────────────────────────────────────────────────────────────
+
+export const bibleStories: BibleStory[] = [
+
+  // ── CREATION ERA  (ring r=200, 5 nodes, start 270°) ──────
+  {
+    id: 'creation',
+    title: 'Creation',
+    era: 'Creation',
+    period: '~4000 BC (traditional)',
+    scripture: 'Genesis 1–2',
+    summary:
+      'In the beginning, God created the heavens and the earth in six days — light and darkness, sky and seas, land and vegetation, sun and moon, creatures of sea and sky, and finally mankind, made in His image. On the seventh day He rested, declaring creation very good.',
+    connections: ['fall', 'noah', 'pentecost', 'revelation', 'sermon-mount'],
+    position: { x: 2000, y: 1800 },
+    importance: 'major',
+  },
+  {
+    id: 'fall',
+    title: 'The Fall',
+    era: 'Creation',
+    period: '~4000 BC',
+    scripture: 'Genesis 3',
+    summary:
+      'Adam and Eve lived in paradise in the Garden of Eden until the serpent tempted Eve to eat from the forbidden Tree of Knowledge. Both ate, disobeying God, and were cast out of the garden. Sin, pain, and death entered the world — but God promised a future deliverer.',
+    connections: ['creation', 'cain-abel', 'wilderness', 'baptism-jesus', 'crucifixion', 'revelation'],
+    position: { x: 2190, y: 1938 },
+    importance: 'major',
+  },
+  {
+    id: 'cain-abel',
+    title: 'Cain & Abel',
+    era: 'Creation',
+    period: '~3900 BC',
+    scripture: 'Genesis 4',
+    summary:
+      'Adam and Eve\'s sons Cain (a farmer) and Abel (a shepherd) both brought offerings to God. God favored Abel\'s offering, and in jealous rage Cain murdered his brother — the first act of human violence. God cursed Cain, marking him and sending him into exile east of Eden.',
+    connections: ['fall', 'noah', 'joseph', 'crucifixion'],
+    position: { x: 2118, y: 2162 },
+    importance: 'normal',
+  },
+  {
+    id: 'noah',
+    title: "Noah's Ark",
+    era: 'Creation',
+    period: '~2400 BC',
+    scripture: 'Genesis 6–9',
+    summary:
+      'As humanity\'s wickedness grew, God chose righteous Noah to build a massive ark and take his family and two of every animal aboard. A great flood covered the earth for 40 days and nights, wiping out all life outside the ark. After the waters receded, God made a covenant with Noah, placing a rainbow in the sky as a sign He would never again flood the earth.',
+    connections: ['cain-abel', 'tower-babel', 'red-sea', 'baptism-jesus', 'jonah'],
+    position: { x: 1882, y: 2162 },
+    importance: 'major',
+  },
+  {
+    id: 'tower-babel',
+    title: 'Tower of Babel',
+    era: 'Creation',
+    period: '~2200 BC',
+    scripture: 'Genesis 11',
+    summary:
+      'After the flood, all people spoke one language and gathered in Babylon to build a tower reaching to the heavens, seeking fame and unity without God. God confused their language, scattering the people across the earth — explaining the origin of the world\'s diverse nations and tongues.',
+    connections: ['noah', 'abraham', 'pentecost', 'paul'],
+    position: { x: 1810, y: 1938 },
+    importance: 'normal',
+  },
+
+  // ── PATRIARCHS  (ring r=430, 5 nodes, start 306°) ────────
+  {
+    id: 'abraham',
+    title: "Abraham's Calling",
+    era: 'Patriarchs',
+    period: '~2100 BC',
+    scripture: 'Genesis 12–17',
+    summary:
+      'God called Abram (later renamed Abraham) out of Ur to journey to Canaan, promising to make him a great nation, give him the land, and bless all peoples through his descendants. Abraham obeyed in faith, and God established a covenant with him, marked by circumcision as a sign.',
+    connections: ['tower-babel', 'sodom', 'isaac', 'moses', 'david-goliath', 'paul'],
+    position: { x: 2253, y: 1652 },
+    importance: 'major',
+  },
+  {
+    id: 'sodom',
+    title: 'Sodom & Gomorrah',
+    era: 'Patriarchs',
+    period: '~2100 BC',
+    scripture: 'Genesis 18–19',
+    summary:
+      'God told Abraham He would destroy the wicked cities of Sodom and Gomorrah. Abraham interceded, bargaining with God. Two angels rescued Abraham\'s nephew Lot and his family before God rained fire and sulfur on both cities, destroying them utterly. Lot\'s wife looked back and became a pillar of salt.',
+    connections: ['abraham', 'jonah'],
+    position: { x: 2409, y: 2133 },
+    importance: 'normal',
+  },
+  {
+    id: 'isaac',
+    title: 'Isaac & the Sacrifice',
+    era: 'Patriarchs',
+    period: '~2050 BC',
+    scripture: 'Genesis 21–22',
+    summary:
+      'God fulfilled His promise and gave Abraham and Sarah a son, Isaac, in their old age. Years later, God tested Abraham by commanding him to sacrifice Isaac. Abraham obeyed, but at the last moment God provided a ram as a substitute — foreshadowing the ultimate sacrifice to come. This cemented God\'s covenant promises to Abraham.',
+    connections: ['abraham', 'jacob-esau', 'crucifixion', 'plagues'],
+    position: { x: 2000, y: 2430 },
+    importance: 'major',
+  },
+  {
+    id: 'jacob-esau',
+    title: 'Jacob & Esau',
+    era: 'Patriarchs',
+    period: '~2000 BC',
+    scripture: 'Genesis 25–33',
+    summary:
+      'Isaac\'s twin sons Esau and Jacob were rivals from birth. Jacob deceived his father to steal Esau\'s blessing, then fled to his uncle Laban\'s house where he married Leah and Rachel. Years later he wrestled with God, was renamed Israel, and was reconciled with Esau. His twelve sons became the twelve tribes of Israel.',
+    connections: ['isaac', 'joseph', 'samuel'],
+    position: { x: 1591, y: 2133 },
+    importance: 'major',
+  },
+  {
+    id: 'joseph',
+    title: 'Joseph & His Brothers',
+    era: 'Patriarchs',
+    period: '~1900 BC',
+    scripture: 'Genesis 37–50',
+    summary:
+      'Joseph, Jacob\'s favored son, was sold into slavery by his jealous brothers. In Egypt he was falsely imprisoned, but his God-given ability to interpret dreams brought him before Pharaoh. Pharaoh appointed him second-in-command over Egypt, where he stored grain during seven years of plenty. When famine struck, his brothers came to Egypt for food and were eventually reconciled with Joseph, who declared God had meant their evil for good.',
+    connections: ['jacob-esau', 'moses', 'paul', 'esther', 'crucifixion'],
+    position: { x: 1747, y: 1652 },
+    importance: 'major',
+  },
+
+  // ── EXODUS  (ring r=680, 5 nodes, start 270°) ────────────
+  {
+    id: 'moses',
+    title: 'Moses & the Burning Bush',
+    era: 'Exodus',
+    period: '~1450 BC',
+    scripture: 'Exodus 1–4',
+    summary:
+      'Centuries after Joseph, the Israelites multiplied greatly in Egypt and were enslaved. A Pharaoh ordered all Hebrew baby boys killed, but Moses was hidden and raised in Pharaoh\'s palace. After killing an Egyptian and fleeing to Midian, God appeared to Moses in a burning bush, revealing His name I AM and commissioning Moses to lead Israel out of Egypt.',
+    connections: ['joseph', 'plagues', 'red-sea', 'elijah', 'transfiguration', 'sermon-mount'],
+    position: { x: 2000, y: 1320 },
+    importance: 'major',
+  },
+  {
+    id: 'plagues',
+    title: 'The Ten Plagues',
+    era: 'Exodus',
+    period: '~1446 BC',
+    scripture: 'Exodus 7–12',
+    summary:
+      'Moses demanded Pharaoh release the Israelites, but Pharaoh hardened his heart. God sent ten devastating plagues on Egypt — water turned to blood, frogs, lice, flies, livestock disease, boils, hail, locusts, darkness, and finally the death of every firstborn son. The Israelites were protected by the blood of a lamb on their doorposts — the first Passover — and were finally released.',
+    connections: ['moses', 'red-sea', 'crucifixion', 'last-supper'],
+    position: { x: 2647, y: 1790 },
+    importance: 'major',
+  },
+  {
+    id: 'red-sea',
+    title: 'Crossing the Red Sea',
+    era: 'Exodus',
+    period: '~1446 BC',
+    scripture: 'Exodus 14–15',
+    summary:
+      'Pharaoh changed his mind and pursued the Israelites with his army. Trapped between the sea and the advancing Egyptians, Moses stretched out his staff and God parted the waters, creating a dry path through the sea. The Israelites crossed safely, but when the Egyptians followed, God released the waters and drowned Pharaoh\'s army. Moses and Miriam led Israel in a song of praise.',
+    connections: ['moses', 'plagues', 'ten-commandments', 'baptism-jesus', 'resurrection'],
+    position: { x: 2400, y: 2550 },
+    importance: 'major',
+  },
+  {
+    id: 'ten-commandments',
+    title: 'Ten Commandments',
+    era: 'Exodus',
+    period: '~1446 BC',
+    scripture: 'Exodus 19–20',
+    summary:
+      'God called Moses to Mount Sinai, which blazed with fire and shook with thunder. There God gave Moses the Law — including the Ten Commandments — to govern Israel as His covenant people. The commandments covered devotion to God alone, honoring His name and the Sabbath, and guiding ethical life with parents, neighbors, and community.',
+    connections: ['red-sea', 'wilderness', 'sermon-mount', 'transfiguration'],
+    position: { x: 1600, y: 2550 },
+    importance: 'major',
+  },
+  {
+    id: 'wilderness',
+    title: 'Wilderness Wandering',
+    era: 'Exodus',
+    period: '~1446–1406 BC',
+    scripture: 'Numbers 13–14',
+    summary:
+      'Israel spent 40 years wandering in the wilderness because the people refused to trust God and enter Canaan after hearing the spies\' fearful report. Despite daily provision of manna, water from a rock, and a pillar of fire by night, Israel repeatedly complained and rebelled. God declared that the faithless generation would not enter the Promised Land — only their children would.',
+    connections: ['ten-commandments', 'jericho', 'baptism-jesus', 'elijah', 'miracles'],
+    position: { x: 1353, y: 1790 },
+    importance: 'normal',
+  },
+
+  // ── CONQUEST & JUDGES  (ring r=950, 5 nodes, start 306°) ─
+  {
+    id: 'jericho',
+    title: 'Battle of Jericho',
+    era: 'Conquest & Judges',
+    period: '~1406 BC',
+    scripture: 'Joshua 2–6',
+    summary:
+      'Joshua led Israel into Canaan and faced the fortified city of Jericho. A Canaanite woman named Rahab hid the Israelite spies, trusting in the God of Israel. God commanded the army to march around the city for seven days, then shout — and the walls of Jericho miraculously collapsed. The city fell and Israel began conquering the Promised Land.',
+    connections: ['wilderness', 'deborah', 'gideon', 'resurrection'],
+    position: { x: 2559, y: 1231 },
+    importance: 'major',
+  },
+  {
+    id: 'deborah',
+    title: 'Deborah the Judge',
+    era: 'Conquest & Judges',
+    period: '~1200 BC',
+    scripture: 'Judges 4–5',
+    summary:
+      'During a time of Canaanite oppression, God raised up Deborah — a prophetess and judge — to lead Israel. She commissioned Barak to battle General Sisera\'s army, but the decisive blow came from Jael, who drove a tent peg through Sisera\'s head. Deborah and Barak sang a great victory song celebrating God\'s deliverance.',
+    connections: ['jericho', 'gideon', 'esther'],
+    position: { x: 2904, y: 2294 },
+    importance: 'normal',
+  },
+  {
+    id: 'gideon',
+    title: "Gideon's 300",
+    era: 'Conquest & Judges',
+    period: '~1170 BC',
+    scripture: 'Judges 6–8',
+    summary:
+      'God called the fearful Gideon to deliver Israel from Midianite oppression. To ensure Israel would know the victory came from God, He reduced Gideon\'s army from 32,000 to just 300 men. With torches, jars, and trumpets — no conventional weapons — they routed the Midianite army in the night, as God caused the enemies to turn their swords on each other.',
+    connections: ['deborah', 'samson', 'ruth', 'david-goliath'],
+    position: { x: 2000, y: 2950 },
+    importance: 'normal',
+  },
+  {
+    id: 'samson',
+    title: 'Samson',
+    era: 'Conquest & Judges',
+    period: '~1100 BC',
+    scripture: 'Judges 13–16',
+    summary:
+      'Samson, a Nazirite set apart to God, was given supernatural strength to fight Israel\'s Philistine enemies. His weakness was his love for Delilah, who was bribed to discover the secret of his strength — his long hair. She shaved his head while he slept, the Philistines captured and blinded him. But in his death he pulled down the temple pillars, killing more Philistines in his death than in his life.',
+    connections: ['gideon', 'ruth', 'samuel', 'crucifixion', 'daniel'],
+    position: { x: 1096, y: 2294 },
+    importance: 'normal',
+  },
+  {
+    id: 'ruth',
+    title: 'Ruth & Boaz',
+    era: 'Conquest & Judges',
+    period: '~1100 BC',
+    scripture: 'Ruth 1–4',
+    summary:
+      'A Moabite widow named Ruth chose to stay with her Israelite mother-in-law Naomi after both their husbands died, declaring "Where you go I will go." Ruth\'s loyalty and faithfulness led her to glean grain in the fields of Boaz, a relative of Naomi, who honored her and became her kinsman-redeemer. Ruth and Boaz married, becoming great-grandparents of King David — and ancestors of Jesus.',
+    connections: ['gideon', 'samson', 'samuel', 'birth-jesus', 'david-goliath'],
+    position: { x: 1441, y: 1231 },
+    importance: 'normal',
+  },
+
+  // ── KINGDOM  (ring r=1220, 6 nodes, start 270°) ──────────
+  {
+    id: 'samuel',
+    title: 'Samuel & the First King',
+    era: 'Kingdom',
+    period: '~1050 BC',
+    scripture: '1 Samuel 1–10',
+    summary:
+      'Samuel was dedicated to God\'s service before birth, heard God call him as a boy in the tabernacle, and became Israel\'s last judge and a great prophet. When Israel demanded a king like the surrounding nations, God warned them through Samuel of the cost, but granted their request. Samuel anointed Saul, a tall man from Benjamin, as Israel\'s first king.',
+    connections: ['samson', 'ruth', 'saul', 'david-goliath', 'elijah'],
+    position: { x: 2000, y: 780 },
+    importance: 'major',
+  },
+  {
+    id: 'saul',
+    title: "King Saul's Downfall",
+    era: 'Kingdom',
+    period: '~1020 BC',
+    scripture: '1 Samuel 13–31',
+    summary:
+      'King Saul started well but repeatedly disobeyed God — offering unauthorized sacrifices, failing to fully destroy Israel\'s enemies, and consulting a medium. God rejected Saul as king and Samuel secretly anointed the young shepherd David as his successor. Saul grew jealous of David\'s fame and spent years trying to kill him. Saul died in battle against the Philistines, falling on his own sword.',
+    connections: ['samuel', 'david-goliath', 'paul'],
+    position: { x: 3057, y: 1390 },
+    importance: 'normal',
+  },
+  {
+    id: 'david-goliath',
+    title: 'David & Goliath',
+    era: 'Kingdom',
+    period: '~1025 BC',
+    scripture: '1 Samuel 17',
+    summary:
+      'The Philistine giant Goliath challenged Israel to single combat for 40 days while the army trembled in fear. The young shepherd David volunteered, trusting in God. Refusing Saul\'s armor, David approached with only a sling and five stones, declaring the battle belonged to the Lord. His first stone struck Goliath\'s forehead and killed him, routing the Philistine army.',
+    connections: ['samuel', 'saul', 'david-bathsheba', 'gideon', 'crucifixion'],
+    position: { x: 3057, y: 2610 },
+    importance: 'major',
+  },
+  {
+    id: 'david-bathsheba',
+    title: 'David & Bathsheba',
+    era: 'Kingdom',
+    period: '~990 BC',
+    scripture: '2 Samuel 11–12',
+    summary:
+      'At the height of David\'s power, he committed two grave sins: adultery with Bathsheba and arranging the battlefield death of her husband Uriah. The prophet Nathan confronted David with a parable, revealing God\'s judgment. David repented deeply (Psalm 51), but faced severe consequences — the child died, and his household was torn by violence. Yet God\'s covenant with David remained, and Solomon was born to Bathsheba.',
+    connections: ['david-goliath', 'solomon-temple', 'paul'],
+    position: { x: 2000, y: 3220 },
+    importance: 'major',
+  },
+  {
+    id: 'solomon-temple',
+    title: "Solomon's Temple",
+    era: 'Kingdom',
+    period: '~966 BC',
+    scripture: '1 Kings 5–8',
+    summary:
+      'David\'s son Solomon, granted extraordinary wisdom by God, built the magnificent Temple in Jerusalem as a permanent home for God\'s presence — a task David had desired but was forbidden because he was a man of war. At its dedication, the glory of God filled the Temple as a cloud. Solomon\'s reign was Israel\'s golden age of peace, wealth, and wisdom — but his many foreign wives eventually led his heart astray.',
+    connections: ['david-bathsheba', 'kingdom-divided', 'elijah', 'fall-jerusalem', 'crucifixion'],
+    position: { x: 943, y: 2610 },
+    importance: 'major',
+  },
+  {
+    id: 'kingdom-divided',
+    title: 'The Kingdom Divided',
+    era: 'Kingdom',
+    period: '~930 BC',
+    scripture: '1 Kings 12',
+    summary:
+      'After Solomon\'s death, his son Rehoboam refused to lighten the people\'s burdens. Ten northern tribes rebelled under Jeroboam, splitting into two kingdoms: Israel in the north and Judah in the south. Jeroboam set up golden calves for Israel to worship, leading them into persistent idolatry. The two kingdoms often warred with each other and against foreign enemies over the following centuries.',
+    connections: ['solomon-temple', 'elijah', 'fall-israel', 'fall-jerusalem'],
+    position: { x: 943, y: 1390 },
+    importance: 'major',
+  },
+
+  // ── PROPHETS & EXILE  (ring r=1520, 11 nodes, start 270°) ─
+  {
+    id: 'elijah',
+    title: 'Elijah & Prophets of Baal',
+    era: 'Prophets & Exile',
+    period: '~874 BC',
+    scripture: '1 Kings 18',
+    summary:
+      'The prophet Elijah challenged the 450 prophets of Baal to a contest on Mount Carmel: each side would call on their god to consume a sacrificial bull with fire. The prophets of Baal cried out all day with no response. Elijah repaired the altar of God, doused it with water three times, and prayed — fire fell from heaven and consumed the offering, water, and stones. The people proclaimed "The Lord, He is God!" and the false prophets were executed.',
+    connections: ['solomon-temple', 'kingdom-divided', 'elisha', 'isaiah', 'transfiguration', 'baptism-jesus', 'wilderness'],
+    position: { x: 2000, y: 480 },
+    importance: 'major',
+  },
+  {
+    id: 'elisha',
+    title: 'Elisha the Prophet',
+    era: 'Prophets & Exile',
+    period: '~850 BC',
+    scripture: '2 Kings 2–13',
+    summary:
+      'Elisha received a double portion of Elijah\'s spirit when Elijah was taken to heaven in a whirlwind. His ministry was marked by many miracles: parting the Jordan river, purifying poisoned water, multiplying oil for a widow, raising a boy from the dead, healing the Syrian general Naaman of leprosy, and making an axe head float. He served faithfully through the reigns of multiple kings.',
+    connections: ['elijah', 'miracles'],
+    position: { x: 2820, y: 720 },
+    importance: 'normal',
+  },
+  {
+    id: 'isaiah',
+    title: "Isaiah's Prophecies",
+    era: 'Prophets & Exile',
+    period: '~740 BC',
+    scripture: 'Isaiah 1; 40; 53',
+    summary:
+      'Isaiah received a dramatic vision of God\'s throne room and was commissioned as a prophet to both warn Israel of judgment and proclaim future hope. His prophecies are among the most detailed in Scripture: the birth of a virgin\'s son called Immanuel, the suffering servant who would bear our sorrows and be pierced for our transgressions, and the glorious restoration of God\'s kingdom.',
+    connections: ['elijah', 'jonah', 'fall-israel', 'jeremiah', 'birth-jesus', 'crucifixion', 'baptism-jesus', 'resurrection'],
+    position: { x: 3382, y: 1366 },
+    importance: 'major',
+  },
+  {
+    id: 'jonah',
+    title: 'Jonah & the Whale',
+    era: 'Prophets & Exile',
+    period: '~760 BC',
+    scripture: 'Jonah 1–4',
+    summary:
+      'God called the prophet Jonah to preach repentance to Nineveh, the capital of Israel\'s feared enemy Assyria. Jonah fled by ship in the opposite direction. God sent a storm; the sailors threw Jonah overboard and he was swallowed by a great fish for three days. From inside the fish he prayed and was vomited out on shore. Jonah went to Nineveh, the whole city repented, and God relented — much to Jonah\'s frustration.',
+    connections: ['isaiah', 'fall-israel', 'resurrection', 'baptism-jesus', 'miracles', 'sodom'],
+    position: { x: 3505, y: 2216 },
+    importance: 'normal',
+  },
+  {
+    id: 'fall-israel',
+    title: 'Fall of Israel',
+    era: 'Prophets & Exile',
+    period: '~722 BC',
+    scripture: '2 Kings 17',
+    summary:
+      'Despite repeated warnings from prophets, the northern kingdom of Israel persisted in idolatry and broke God\'s covenant. God allowed the Assyrian Empire under Shalmaneser to invade and destroy Samaria, deporting the Israelites and resettling the land with foreign peoples. The ten northern tribes were scattered and largely lost to history — a sobering fulfillment of God\'s warnings through Moses and the prophets.',
+    connections: ['kingdom-divided', 'isaiah', 'jonah', 'jeremiah', 'fall-jerusalem'],
+    position: { x: 3149, y: 2996 },
+    importance: 'major',
+  },
+  {
+    id: 'jeremiah',
+    title: 'Jeremiah & the Exile',
+    era: 'Prophets & Exile',
+    period: '~626 BC',
+    scripture: 'Jeremiah 1; 29; 31',
+    summary:
+      'Called as a "weeping prophet," Jeremiah preached for 40 years to a Judah that would not listen, warning of coming Babylonian conquest. Despite being imprisoned and thrown in a cistern, he continued prophesying. He wrote to the exiles to "seek the peace of the city" and promised God\'s future plans for them — hope and a future. He prophesied a new covenant that God would write on human hearts.',
+    connections: ['fall-israel', 'daniel', 'fall-jerusalem', 'last-supper'],
+    position: { x: 2429, y: 3458 },
+    importance: 'major',
+  },
+  {
+    id: 'fall-jerusalem',
+    title: 'Fall of Jerusalem',
+    era: 'Prophets & Exile',
+    period: '~587 BC',
+    scripture: '2 Kings 25; Lamentations 1',
+    summary:
+      'After years of warning, Babylon\'s King Nebuchadnezzar besieged Jerusalem, destroyed Solomon\'s Temple, and carried the remaining people into exile in Babylon. The city walls were torn down, the ark of the covenant disappeared, and the Davidic dynasty seemed to end. Jeremiah sat among the ruins and wrote Lamentations, mourning the destruction but clinging to God\'s faithfulness.',
+    connections: ['jeremiah', 'daniel', 'esther', 'ezra', 'nehemiah'],
+    position: { x: 1571, y: 3458 },
+    importance: 'major',
+  },
+  {
+    id: 'daniel',
+    title: 'Daniel in Babylon',
+    era: 'Prophets & Exile',
+    period: '~605 BC',
+    scripture: 'Daniel 1; 3; 6',
+    summary:
+      'Daniel and his friends were among the young men taken to Babylon to be trained for royal service. They refused to defile themselves with the king\'s food and were blessed by God. When Shadrach, Meshach, and Abednego refused to bow to Nebuchadnezzar\'s golden idol, they were thrown into a furnace but emerged unharmed, with a fourth figure walking among them. Daniel himself survived the lion\'s den and received extraordinary visions of future kingdoms and the Son of Man.',
+    connections: ['jeremiah', 'fall-jerusalem', 'esther', 'ezra', 'revelation', 'birth-jesus', 'crucifixion', 'samson'],
+    position: { x: 851, y: 2996 },
+    importance: 'major',
+  },
+  {
+    id: 'esther',
+    title: 'Esther',
+    era: 'Prophets & Exile',
+    period: '~483 BC',
+    scripture: 'Esther 1–10',
+    summary:
+      'A Jewish orphan named Esther became queen of Persia under King Ahasuerus. When the king\'s wicked official Haman devised a plan to exterminate all Jews in the empire, Esther\'s cousin Mordecai urged her to act: "Who knows whether you have not come to the kingdom for such a time as this?" Esther risked her life to approach the king, exposed Haman\'s plot, and saved her people. Haman was hanged on the gallows he built for Mordecai.',
+    connections: ['fall-jerusalem', 'daniel', 'ezra', 'crucifixion', 'paul', 'deborah'],
+    position: { x: 495, y: 2216 },
+    importance: 'major',
+  },
+  {
+    id: 'ezra',
+    title: 'Ezra & Return from Exile',
+    era: 'Prophets & Exile',
+    period: '~458 BC',
+    scripture: 'Ezra 1–10',
+    summary:
+      'The Persian king Cyrus issued a decree allowing the Jewish exiles to return to their homeland — fulfilling Isaiah\'s prophecy. Under Zerubbabel, then Ezra the scribe, waves of exiles returned. They rebuilt the Temple in Jerusalem (the Second Temple) amid opposition. Ezra led a spiritual revival, calling the people back to God\'s law and requiring them to put away their foreign wives who had led them into idolatry.',
+    connections: ['daniel', 'esther', 'nehemiah', 'birth-jesus'],
+    position: { x: 618, y: 1366 },
+    importance: 'normal',
+  },
+  {
+    id: 'nehemiah',
+    title: 'Nehemiah Rebuilds the Wall',
+    era: 'Prophets & Exile',
+    period: '~445 BC',
+    scripture: 'Nehemiah 1–6',
+    summary:
+      'Nehemiah, a Jewish cupbearer to the Persian king Artaxerxes, wept and prayed when he heard Jerusalem\'s walls remained in ruins. He received permission to return and lead the rebuilding. Despite constant opposition, mockery, and threats from enemies, Nehemiah organized the people to build the wall in just 52 days, declaring the work was accomplished with God\'s help. He and Ezra then led a great public reading of the Law.',
+    connections: ['ezra', 'birth-jesus', 'paul'],
+    position: { x: 1180, y: 720 },
+    importance: 'normal',
+  },
+
+  // ── NEW TESTAMENT  (ring r=1850, 11 nodes, start 286°) ───
+  {
+    id: 'birth-jesus',
+    title: 'Birth of Jesus',
+    era: 'New Testament',
+    period: '~5 BC',
+    scripture: 'Matthew 1–2; Luke 1–2',
+    summary:
+      'An angel announced to the virgin Mary that she would conceive by the Holy Spirit and bear the Son of God. Joseph, her betrothed, took her as his wife. Jesus was born in Bethlehem, laid in a manger because there was no room at the inn. Angels announced His birth to shepherds; wise men from the East followed a star to worship Him and bring gifts. Fulfilling dozens of Old Testament prophecies, God had entered human history.',
+    connections: ['isaiah', 'nehemiah', 'baptism-jesus', 'creation', 'fall', 'ruth', 'ezra'],
+    position: { x: 2522, y: 225 },
+    importance: 'major',
+  },
+  {
+    id: 'baptism-jesus',
+    title: "Jesus' Baptism & Temptation",
+    era: 'New Testament',
+    period: '~27 AD',
+    scripture: 'Matthew 3–4',
+    summary:
+      'John the Baptist preached repentance in the wilderness, preparing the way for Jesus. When Jesus came to be baptized, the Holy Spirit descended like a dove and the Father\'s voice declared: "This is my beloved Son, with whom I am well pleased." Jesus was then led into the desert for 40 days where Satan tempted him three times with bread, power, and worship — and Jesus refused each temptation with Scripture.',
+    connections: ['birth-jesus', 'sermon-mount', 'miracles', 'wilderness', 'elijah', 'red-sea', 'noah', 'jonah'],
+    position: { x: 3398, y: 788 },
+    importance: 'major',
+  },
+  {
+    id: 'sermon-mount',
+    title: 'Sermon on the Mount',
+    era: 'New Testament',
+    period: '~28 AD',
+    scripture: 'Matthew 5–7',
+    summary:
+      'Jesus sat on a hillside and delivered the most famous sermon in history. He began with the Beatitudes — blessings for the poor in spirit, the meek, the merciful, and the peacemakers. He taught the Lord\'s Prayer, warned against hypocrisy, called His followers to love their enemies, and declared a radical new ethic far exceeding the letter of the law. He concluded: those who hear and obey His words are like a man who builds his house on a rock.',
+    connections: ['baptism-jesus', 'miracles', 'last-supper', 'ten-commandments', 'creation'],
+    position: { x: 3831, y: 1737 },
+    importance: 'major',
+  },
+  {
+    id: 'miracles',
+    title: "Jesus' Miracles",
+    era: 'New Testament',
+    period: '~28–30 AD',
+    scripture: 'John 2; Mark 5; John 11',
+    summary:
+      'Jesus performed astounding miracles throughout His ministry: turning water into wine at a wedding, feeding 5,000 people with five loaves and two fish, healing the blind, deaf, lame, and lepers, walking on water, calming a storm with a word, and raising the dead including Lazarus after four days in the tomb. Each miracle was a sign pointing to His identity as the Son of God and the arrival of God\'s kingdom.',
+    connections: ['baptism-jesus', 'sermon-mount', 'transfiguration', 'last-supper', 'elisha', 'wilderness', 'jonah'],
+    position: { x: 3681, y: 2771 },
+    importance: 'major',
+  },
+  {
+    id: 'transfiguration',
+    title: 'The Transfiguration',
+    era: 'New Testament',
+    period: '~29 AD',
+    scripture: 'Matthew 17',
+    summary:
+      'Jesus took Peter, James, and John up a high mountain where His appearance was transformed — His face shone like the sun and His clothes became dazzling white. Moses and Elijah appeared and conversed with Him. God\'s voice again declared Jesus His beloved Son: "Listen to Him!" The disciples fell on their faces in awe. This vision confirmed Jesus as the fulfillment of the Law (Moses) and the Prophets (Elijah).',
+    connections: ['miracles', 'last-supper', 'elijah', 'ten-commandments', 'resurrection'],
+    position: { x: 2998, y: 3558 },
+    importance: 'normal',
+  },
+  {
+    id: 'last-supper',
+    title: 'The Last Supper',
+    era: 'New Testament',
+    period: '~30 AD',
+    scripture: 'Matthew 26; John 13–17',
+    summary:
+      'On the night before His crucifixion, Jesus ate the Passover meal with His twelve disciples. He washed their feet as a servant. He took bread and wine and instituted the Lord\'s Supper — His body broken and blood shed for the forgiveness of sins. He foretold Judas\'s betrayal and Peter\'s denial. He delivered long farewell discourses, promising the Holy Spirit, declaring "I am the way, the truth, and the life," and praying for all future believers.',
+    connections: ['sermon-mount', 'miracles', 'transfiguration', 'crucifixion', 'plagues', 'jeremiah'],
+    position: { x: 2000, y: 3850 },
+    importance: 'major',
+  },
+  {
+    id: 'crucifixion',
+    title: 'Crucifixion',
+    era: 'New Testament',
+    period: '~30 AD',
+    scripture: 'Matthew 27; John 19',
+    summary:
+      'Judas betrayed Jesus for 30 pieces of silver. Jesus was arrested, tried before Pilate (who found no fault in Him), mocked, flogged, and condemned. He was nailed to a cross on Golgotha ("the skull") between two criminals. The sky darkened, the Temple curtain tore in two, and Jesus cried out "It is finished!" before giving up His spirit. He was buried in a borrowed tomb before the Sabbath — the Passover Lamb had been sacrificed for the sins of the world.',
+    connections: ['last-supper', 'resurrection', 'isaac', 'plagues', 'isaiah', 'samson', 'fall', 'solomon-temple', 'daniel', 'joseph', 'cain-abel'],
+    position: { x: 1002, y: 3558 },
+    importance: 'major',
+  },
+  {
+    id: 'resurrection',
+    title: 'Resurrection',
+    era: 'New Testament',
+    period: '~30 AD',
+    scripture: 'Matthew 28; John 20–21',
+    summary:
+      'On the third day after His crucifixion, Mary Magdalene and other women found the tomb empty. Angels declared "He is not here; He has risen!" Jesus appeared to Mary in the garden, to two disciples on the road to Emmaus, to the eleven apostles in a locked room, and to more than 500 people. He showed Thomas His wounds and commissioned His disciples: "Go therefore and make disciples of all nations." Forty days later He ascended to heaven.',
+    connections: ['crucifixion', 'pentecost', 'jonah', 'creation', 'red-sea', 'transfiguration'],
+    position: { x: 319, y: 2771 },
+    importance: 'major',
+  },
+  {
+    id: 'pentecost',
+    title: 'Pentecost & the Church',
+    era: 'New Testament',
+    period: '~30 AD',
+    scripture: 'Acts 2',
+    summary:
+      'Fifty days after Passover, the disciples gathered in Jerusalem when a sound like a rushing wind filled the house and tongues of fire rested on each of them — they were filled with the Holy Spirit and began speaking in languages they had never learned. Peter preached boldly to the crowd; 3,000 people believed and were baptized that day. The church was born — a community devoted to the apostles\' teaching, fellowship, breaking of bread, and prayer.',
+    connections: ['resurrection', 'paul', 'tower-babel', 'creation', 'elijah'],
+    position: { x: 169, y: 1737 },
+    importance: 'major',
+  },
+  {
+    id: 'paul',
+    title: "Paul's Conversion & Mission",
+    era: 'New Testament',
+    period: '~34–60 AD',
+    scripture: 'Acts 9; 13–28',
+    summary:
+      'Saul of Tarsus was a zealous Pharisee who persecuted Christians — until a blinding light knocked him to the ground on the road to Damascus and Jesus spoke to him. Transformed into the apostle Paul, he traveled on three missionary journeys across the Roman Empire, planting churches in Galatia, Macedonia, Corinth, and Ephesus. He wrote thirteen letters (epistles) that form a large part of the New Testament, teaching salvation by grace through faith.',
+    connections: ['pentecost', 'revelation', 'saul', 'esther', 'abraham', 'joseph'],
+    position: { x: 602, y: 788 },
+    importance: 'major',
+  },
+  {
+    id: 'revelation',
+    title: 'Revelation',
+    era: 'New Testament',
+    period: '~95 AD',
+    scripture: 'Revelation 1; 21–22',
+    summary:
+      'Exiled on the island of Patmos, the apostle John received a sweeping vision of the risen and glorified Jesus, letters to seven churches, and the unfolding of the end of history. Through vivid symbolic imagery he saw judgment, the defeat of Satan, and the final culmination: a new heaven and a new earth, the New Jerusalem descending from heaven, God dwelling with His people forever, and Jesus declaring "I am the Alpha and the Omega, the beginning and the end."',
+    connections: ['paul', 'creation', 'fall', 'daniel', 'resurrection'],
+    position: { x: 1478, y: 225 },
+    importance: 'major',
+  },
+]
+
+// ── Connection labels ────────────────────────────────────────
+// Short phrases explaining why two stories are connected.
+// Keys are always the two story ids sorted alphabetically, joined by '--'.
+export const CONNECTION_LABELS: Record<string, string> = {
+  'baptism-jesus--birth-jesus':        'Life Begins',
+  'baptism-jesus--elijah':             'Forerunner',
+  'baptism-jesus--fall':               'Second Adam',
+  'baptism-jesus--jonah':              'Emerged Alive',
+  'baptism-jesus--miracles':           'Power Shown',
+  'baptism-jesus--noah':               'Water & Spirit',
+  'baptism-jesus--red-sea':            'Through Water',
+  'baptism-jesus--sermon-mount':       'Ministry Begins',
+  'baptism-jesus--wilderness':         '40-Day Test',
+  'birth-jesus--creation':             'God Enters World',
+  'birth-jesus--ezra':                 'Return to Land',
+  'birth-jesus--fall':                 'Promised Seed',
+  'birth-jesus--isaiah':               'Virgin Birth',
+  'birth-jesus--nehemiah':             'Restored Nation',
+  'birth-jesus--ruth':                 "Ruth's Descendant",
+  'cain-abel--crucifixion':            'Innocent Blood',
+  'cain-abel--fall':                   'First Murder',
+  'cain-abel--joseph':                 "Brothers' Betrayal",
+  'cain-abel--noah':                   'Violence & Flood',
+  'creation--fall':                    'Paradise Lost',
+  'creation--noah':                    'Re-creation',
+  'creation--pentecost':               'Spirit Returns',
+  'creation--resurrection':            'New Creation',
+  'creation--revelation':              'Alpha & Omega',
+  'creation--sermon-mount':            'New Ethics',
+  'crucifixion--daniel':               'Anointed One',
+  'crucifixion--fall':                 'Sin Atoned',
+  'crucifixion--isaac':                'Substituted Lamb',
+  'crucifixion--isaiah':               'Suffering Servant',
+  'crucifixion--joseph':               'Betrayed & Exalted',
+  'crucifixion--last-supper':          'Body & Blood',
+  'crucifixion--plagues':              'Passover Lamb',
+  'crucifixion--resurrection':         'Death & Life',
+  'crucifixion--samson':               'Death Saves',
+  'crucifixion--solomon-temple':       'Veil Torn',
+  'daniel--esther':                    'Exiles in Power',
+  'daniel--ezra':                      'Return Vision',
+  'daniel--fall-jerusalem':            'Into Babylon',
+  'daniel--jeremiah':                  'Exile Together',
+  'daniel--revelation':                'End Times Vision',
+  'daniel--samson':                    'Faithful in Chains',
+  'david-bathsheba--david-goliath':    "David's Fall",
+  'david-bathsheba--paul':             'Grace Covers Sin',
+  'david-bathsheba--solomon-temple':   'Father & Son',
+  'david-goliath--crucifixion':        'Champion Saves All',
+  'david-goliath--gideon':             'Few Defeat Many',
+  'david-goliath--ruth':               "David's Line",
+  'david-goliath--samuel':             'Anointed Hero',
+  'david-goliath--saul':               'King & Champion',
+  'deborah--esther':                   'Women of Courage',
+  'deborah--gideon':                   "Judge's Victory",
+  'deborah--jericho':                  'Conquest Era',
+  'elijah--elisha':                    'Double Portion',
+  'elijah--isaiah':                    'Prophet Chain',
+  'elijah--kingdom-divided':           'Northern Prophet',
+  'elijah--pentecost':                 'Fire & Spirit',
+  'elijah--samuel':                    'Prophet Chain',
+  'elijah--solomon-temple':            'After the Temple',
+  'elijah--transfiguration':           'Appears With Jesus',
+  'elijah--wilderness':                'Desert Prophet',
+  'elisha--miracles':                  'Miracle Pattern',
+  'esther--crucifixion':               'Intercedes for All',
+  'esther--ezra':                      'Persian Period',
+  'esther--fall-jerusalem':            'Scattered People',
+  'esther--joseph':                    'Exiled & Exalted',
+  'esther--paul':                      'Jewish Mission',
+  'ezra--fall-jerusalem':              'Return Begins',
+  'ezra--nehemiah':                    'Partners in Rebuilding',
+  'fall--revelation':                  'Curse Reversed',
+  'fall--wilderness':                  'Desert Tested',
+  'fall-israel--fall-jerusalem':       'Both Kingdoms Fall',
+  'fall-israel--isaiah':               'Warned Israel',
+  'fall-israel--jeremiah':             'Prophet Warns',
+  'fall-israel--jonah':                'Nineveh Warning',
+  'fall-israel--kingdom-divided':      'North Falls',
+  'fall-jerusalem--daniel':            'Into Babylon',
+  'fall-jerusalem--esther':            'Scattered People',
+  'fall-jerusalem--ezra':              'Return Begins',
+  'fall-jerusalem--jeremiah':          'Witnesses Fall',
+  'fall-jerusalem--nehemiah':          'Rebuilt Later',
+  'gideon--jericho':                   "God's Battle",
+  'gideon--ruth':                      'Same Period',
+  'gideon--samson':                    'Judges Era',
+  'isaac--jacob-esau':                 'Father & Sons',
+  'isaac--plagues':                    'Lamb Prefigured',
+  'isaiah--jeremiah':                  'Fellow Prophets',
+  'isaiah--jonah':                     'Prophet Era',
+  'isaiah--resurrection':              'He Shall Rise',
+  'jacob-esau--joseph':                'Father & Sons',
+  'jacob-esau--samuel':                'Twelve Tribes',
+  'jeremiah--last-supper':             'New Covenant',
+  'jericho--resurrection':             'Walls Fall Down',
+  'jericho--wilderness':               'End of Wandering',
+  'jonah--miracles':                   'Sign of Jonah',
+  'jonah--resurrection':               '3 Days & 3 Nights',
+  'jonah--sodom':                      "God's Mercy",
+  'joseph--moses':                     'Egypt to Exodus',
+  'joseph--paul':                      'Betrayed & Redeemed',
+  'kingdom-divided--fall-israel':      'North Falls',
+  'kingdom-divided--fall-jerusalem':   'South Falls',
+  'kingdom-divided--solomon-temple':   'After Solomon',
+  'last-supper--miracles':             'Final Night',
+  'last-supper--plagues':              'Passover Meal',
+  'last-supper--sermon-mount':         'Teachings & Table',
+  'last-supper--transfiguration':      'Before the Cross',
+  'miracles--sermon-mount':            'Kingdom Shown',
+  'miracles--transfiguration':         'Glory Revealed',
+  'miracles--wilderness':              'God Provides',
+  'abraham--moses':                    'Covenant Continues',
+  'abraham--paul':                     'Faith Alone',
+  'abraham--sodom':                    'Intercession',
+  'abraham--tower-babel':              'Scatter & Call',
+  'moses--elijah':                     'Law & Prophets',
+  'moses--plagues':                    "God's Power",
+  'moses--red-sea':                    'Sea Parts',
+  'moses--sermon-mount':               'Law Fulfilled',
+  'moses--transfiguration':            'Appears With Jesus',
+  'nehemiah--paul':                    'Rebuild & Spread',
+  'noah--jonah':                       'Saved by Waters',
+  'noah--red-sea':                     'Waters Part',
+  'noah--tower-babel':                 'New Beginning',
+  'paul--pentecost':                   'Spirit-Led Mission',
+  'paul--revelation':                  'Letters to Churches',
+  'paul--saul':                        'Same Name',
+  'pentecost--resurrection':           'Risen & Poured Out',
+  'pentecost--tower-babel':            'Languages Healed',
+  'plagues--red-sea':                  'Exodus Begins',
+  'red-sea--resurrection':             'Through Death',
+  'red-sea--ten-commandments':         'On to Sinai',
+  'resurrection--transfiguration':     'Glory Preview',
+  'ruth--samuel':                      "David's Lineage",
+  'samson--ruth':                      'Same Period',
+  'samson--samuel':                    'Last Judges',
+  'samuel--saul':                      'First King',
+  'ten-commandments--transfiguration': 'Moses Returns',
+  'ten-commandments--wilderness':      'Desert Law',
+  'abraham--david-goliath':            'Faith in God',
+  'abraham--isaac':                    'Father & Son',
+}
+
+export const connLabel = (a: string, b: string): string =>
+  CONNECTION_LABELS[[a, b].sort().join('--')] ?? ''
