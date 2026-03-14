@@ -66,11 +66,22 @@ Connections span eras and follow thematic threads, not just narrative order:
 
 Every story panel includes a chat interface powered by Claude AI. The scholar is given the full context of whichever story you're viewing — title, scripture, era, and summary — so its answers are always grounded in that specific story. You can ask about themes, history, theology, characters, or connections to other parts of the Bible.
 
+The scholar is available in two places:
+- **Main graph** — opens in the right panel when you click any node
+- **Deep Dive page** — lives in the lower half of the right panel, always focused on the center story
+
 ---
 
 ## Deep Dive
 
-When you click a node, a golden cloud floats up near it. Clicking that cloud takes you to a dedicated page for that story — the selected story sits at the center of a radial graph, with every connected story arranged in a circle around it. Hovering a surrounding story shows its details; clicking it takes you into its own deep dive.
+When you click a node, a golden cloud floats up near it — below and to the side, so it never covers the node description. Clicking that cloud takes you to a dedicated page for that story — the selected story sits at the center of a radial graph, with every connected story arranged in a circle around it.
+
+On the Deep Dive page:
+- **Click any connection line** to see a short label explaining why those two stories are linked (e.g. "Suffering Servant", "Alpha & Omega", "3 Days & 3 Nights"). Every connection across all 48 stories has its own label. Click the line again or click the background to dismiss it.
+- **Hover a surrounding node** to highlight it and reveal a button to deep dive into that story
+- **AI Scholar** — the same chat interface from the main page is available here, always focused on the center story you're diving into
+- **Back to Graph** — returns to the main network page
+- **Previous Node** — steps back through your deep dive history, so you can retrace your path through connected stories
 
 ---
 

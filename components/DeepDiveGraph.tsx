@@ -42,9 +42,17 @@ export default function DeepDiveGraph({ storyId }: Props) {
   const [messages,    setMessages   ] = useState<Message[]>([])
   const [input,       setInput      ] = useState('')
   const [loading,     setLoading    ] = useState(false)
+  const [isMobile,    setIsMobile   ] = useState(false)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef       = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     setMessages([])
@@ -156,6 +164,7 @@ export default function DeepDiveGraph({ storyId }: Props) {
   return (
     <div style={{
       display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
       width: '100vw',
       height: '100vh',
       background: '#0d0a06',
@@ -166,7 +175,7 @@ export default function DeepDiveGraph({ storyId }: Props) {
       {/* ── Header ──────────────────────────────────────── */}
       <div style={{
         position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 50, padding: '10px 36px',
+        zIndex: 50, padding: isMobile ? '6px 16px' : '10px 36px',
         background: 'rgba(8,5,2,0.88)',
         border: '1px solid rgba(196,150,10,0.35)',
         borderTop: 'none', borderRadius: '0 0 14px 14px',
@@ -174,7 +183,7 @@ export default function DeepDiveGraph({ storyId }: Props) {
         textAlign: 'center', pointerEvents: 'none',
       }}>
         <h1 style={{
-          margin: 0, fontSize: 26, fontWeight: 700,
+          margin: 0, fontSize: isMobile ? 18 : 26, fontWeight: 700,
           color: '#e8c870', letterSpacing: '0.12em',
           textShadow: '0 0 20px rgba(232,184,48,0.5)',
         }}>
@@ -183,47 +192,51 @@ export default function DeepDiveGraph({ storyId }: Props) {
       </div>
 
       {/* ── Navigation buttons ───────────────────────────── */}
-      <div style={{ position: 'fixed', top: 20, left: 20, zIndex: 50, display: 'flex', gap: 8 }}>
+      <div style={{ position: 'fixed', top: isMobile ? 10 : 20, left: isMobile ? 8 : 20, zIndex: 50, display: 'flex', gap: 6 }}>
         <button
           onClick={() => router.push('/')}
           style={{
             background: 'rgba(8,5,2,0.88)',
             border: '1px solid rgba(196,150,10,0.35)',
-            borderRadius: 8, padding: '8px 16px',
+            borderRadius: 8, padding: isMobile ? '5px 10px' : '8px 16px',
             color: '#c4960a', cursor: 'pointer',
             fontFamily: "'EB Garamond', Georgia, serif",
-            fontSize: 14, backdropFilter: 'blur(10px)',
+            fontSize: isMobile ? 11 : 14, backdropFilter: 'blur(10px)',
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(196,150,10,0.15)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(8,5,2,0.88)' }}
         >
-          ← Back to Graph
+          ← Graph
         </button>
         <button
           onClick={() => router.back()}
           style={{
             background: 'rgba(8,5,2,0.88)',
             border: '1px solid rgba(196,150,10,0.35)',
-            borderRadius: 8, padding: '8px 16px',
+            borderRadius: 8, padding: isMobile ? '5px 10px' : '8px 16px',
             color: '#c4960a', cursor: 'pointer',
             fontFamily: "'EB Garamond', Georgia, serif",
-            fontSize: 14, backdropFilter: 'blur(10px)',
+            fontSize: isMobile ? 11 : 14, backdropFilter: 'blur(10px)',
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(196,150,10,0.15)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(8,5,2,0.88)' }}
         >
-          ← Previous Node
+          ← Previous
         </button>
       </div>
 
       {/* ── SVG Graph ───────────────────────────────────── */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{
+        flex: isMobile ? 'none' : 1,
+        height: isMobile ? '45vh' : '100%',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
         <svg
           viewBox={`${-VIEW} ${-VIEW} ${VIEW * 2} ${VIEW * 2}`}
           style={{
             width: '100%', height: '100%',
-            maxWidth: 'calc(100vh - 80px)',
-            maxHeight: 'calc(100vh - 80px)',
+            maxWidth: isMobile ? '100vw' : 'calc(100vh - 80px)',
+            maxHeight: isMobile ? '45vh' : 'calc(100vh - 80px)',
           }}
           onClick={() => setClickedEdge(null)}
         >
@@ -410,16 +423,19 @@ export default function DeepDiveGraph({ storyId }: Props) {
 
       {/* ── Right panel ─────────────────────────────────── */}
       <div style={{
-        width: 320, flexShrink: 0, height: '100%',
+        width: isMobile ? '100%' : 320,
+        flexShrink: 0,
+        height: isMobile ? '55vh' : '100%',
         background: 'rgba(8,5,2,0.95)',
-        borderLeft: '1px solid rgba(196,150,10,0.2)',
+        borderLeft: isMobile ? 'none' : '1px solid rgba(196,150,10,0.2)',
+        borderTop: isMobile ? '1px solid rgba(196,150,10,0.2)' : 'none',
         backdropFilter: 'blur(12px)',
         display: 'flex', flexDirection: 'column',
         overflow: 'hidden',
       }}>
         {/* ── Story details (scrollable) ───────────────── */}
         <div style={{
-          padding: '80px 20px 16px',
+          padding: isMobile ? '12px 16px 12px' : '80px 20px 16px',
           overflowY: 'auto',
           flexShrink: 0,
           maxHeight: '46%',

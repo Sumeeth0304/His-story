@@ -137,6 +137,7 @@ export default function BibleGraph() {
     nodes: INTERCONNECT_NODES,
     links: freshILinks(),
   })
+  const [isMobile, setIsMobile] = useState(false)
 
   const selectedRef  = useRef<BibleStory | null>(null)
   const hoveredRef   = useRef<string     | null>(null)
@@ -147,6 +148,13 @@ export default function BibleGraph() {
 
   useEffect(() => {
     import('react-force-graph-2d').then((mod) => setForceGraph(() => mod.default))
+  }, [])
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
   }, [])
 
   // ── Switch view ──────────────────────────────────────────
@@ -410,10 +418,11 @@ export default function BibleGraph() {
         borderTop: 'none', borderRadius: '0 0 16px 16px',
         backdropFilter: 'blur(10px)',
         textAlign: 'center', pointerEvents: 'auto',
-        padding: '10px 32px 12px',
+        padding: isMobile ? '8px 16px 10px' : '10px 32px 12px',
+        width: isMobile ? 'calc(100vw - 32px)' : 'auto',
       }}>
         <h1 style={{
-          margin: '0 0 8px', fontSize: 26, fontWeight: 700,
+          margin: '0 0 6px', fontSize: isMobile ? 20 : 26, fontWeight: 700,
           color: '#e8c870', letterSpacing: '0.12em',
           textShadow: '0 0 20px rgba(232,184,48,0.5)',
           pointerEvents: 'none',
@@ -422,32 +431,37 @@ export default function BibleGraph() {
         </h1>
 
         {/* View toggle */}
-        <div style={{ display: 'flex', gap: 0, justifyContent: 'center', marginBottom: 6 }}>
+        <div style={{ display: 'flex', gap: 0, justifyContent: 'center', marginBottom: isMobile ? 0 : 6 }}>
           <button
             onClick={() => switchView('interconnect')}
-            style={{ ...tabStyle(view === 'interconnect'), borderRadius: '6px 0 0 6px' }}
+            style={{ ...tabStyle(view === 'interconnect'), borderRadius: '6px 0 0 6px', fontSize: isMobile ? 9 : 11 }}
           >
-            Interconnect View
+            Interconnect
           </button>
           <button
             onClick={() => switchView('sequential')}
-            style={{ ...tabStyle(view === 'sequential'), borderRadius: '0 6px 6px 0', borderLeft: 'none' }}
+            style={{ ...tabStyle(view === 'sequential'), borderRadius: '0 6px 6px 0', borderLeft: 'none', fontSize: isMobile ? 9 : 11 }}
           >
-            Sequential View
+            Sequential
           </button>
         </div>
-        <div style={{ fontSize: 9.5, color: 'rgba(196,150,10,0.4)', marginTop: 5, fontStyle: 'italic', pointerEvents: 'none' }}>
-          drag to pin · double-click to release
-        </div>
+        {!isMobile && (
+          <div style={{ fontSize: 9.5, color: 'rgba(196,150,10,0.4)', marginTop: 5, fontStyle: 'italic', pointerEvents: 'none' }}>
+            drag to pin · double-click to release
+          </div>
+        )}
       </div>
 
-      <StoryList
-        stories={bibleStories}
-        selectedId={selectedStory?.id ?? null}
-        onSelect={selectStory}
-      />
+      {/* Sidebar hidden on mobile */}
+      {!isMobile && (
+        <StoryList
+          stories={bibleStories}
+          selectedId={selectedStory?.id ?? null}
+          onSelect={selectStory}
+        />
+      )}
 
-      <div style={{ marginLeft: 220, flex: 1, height: '100%' }}>
+      <div style={{ marginLeft: isMobile ? 0 : 220, flex: 1, height: '100%' }}>
         {ForceGraph && (
           <ForceGraph
             key={view}
@@ -472,7 +486,7 @@ export default function BibleGraph() {
         )}
       </div>
 
-      <StoryPanel story={selectedStory} onClose={() => selectStory(null)} />
+      <StoryPanel story={selectedStory} onClose={() => selectStory(null)} isMobile={isMobile} />
     </div>
   )
 }

@@ -11,6 +11,7 @@ interface Message {
 interface StoryPanelProps {
   story: BibleStory | null
   onClose: () => void
+  isMobile?: boolean
 }
 
 const ERA_ACCENT: Record<string, string> = {
@@ -23,7 +24,7 @@ const ERA_ACCENT: Record<string, string> = {
   'New Testament':      '#2a6b5a',
 }
 
-export default function StoryPanel({ story, onClose }: StoryPanelProps) {
+export default function StoryPanel({ story, onClose, isMobile = false }: StoryPanelProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -122,7 +123,24 @@ export default function StoryPanel({ story, onClose }: StoryPanelProps) {
   const accent = story ? ERA_ACCENT[story.era] ?? '#c4960a' : '#c4960a'
   const isOpen = story !== null
 
-  const panelStyle: React.CSSProperties = {
+  const panelStyle: React.CSSProperties = isMobile ? {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '72vh',
+    zIndex: 50,
+    display: 'flex',
+    flexDirection: 'column',
+    fontFamily: "'EB Garamond', Georgia, serif",
+    background: 'rgba(10,7,2,0.97)',
+    borderTop: `2px solid ${accent}60`,
+    borderRadius: '16px 16px 0 0',
+    boxShadow: `0 -8px 40px rgba(0,0,0,0.8)`,
+    backdropFilter: 'blur(16px)',
+    transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
+    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  } : {
     position: 'fixed',
     top: 0,
     right: 0,
@@ -142,6 +160,12 @@ export default function StoryPanel({ story, onClose }: StoryPanelProps) {
 
   return (
     <div style={panelStyle}>
+      {/* Drag handle — mobile only */}
+      {isMobile && (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 4px', flexShrink: 0 }}>
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: `${accent}50` }} />
+        </div>
+      )}
       {story && (
         <>
           {/* Header */}
