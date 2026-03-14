@@ -67,11 +67,11 @@ export default function StoryPanel({ story, onClose, isMobile = false }: StoryPa
   const handleDragEnd = () => {
     if (!dragRef.current) return
     dragRef.current = null
-    if (panelHeight < 28) {
+    if (panelHeight < 10) {
       onClose()
       setPanelHeight(72)
-    } else if (panelHeight < 52) {
-      setPanelHeight(40)
+    } else if (panelHeight < 45) {
+      setPanelHeight(35)
     } else {
       setPanelHeight(72)
     }
