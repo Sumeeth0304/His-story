@@ -134,10 +134,32 @@ Requires an `ANTHROPIC_API_KEY` in `.env.local` for the AI chat to work.
 
 ---
 
+## Mobile Layout
+
+The site is fully usable on a phone. The layout adapts in the following ways:
+
+**Main graph page:**
+- The story list on the left is hidden by default to give the graph more room
+- A hamburger button (☰) in the top-left corner opens the story list as an overlay; tapping any story or the dark backdrop closes it
+- The header shrinks to fit the screen width
+- When you tap a node, the story panel slides up from the bottom instead of in from the right
+
+**Story panel on mobile:**
+- The panel opens at 72% of the screen height, leaving the graph visible above it
+- A drag handle at the top lets you resize the panel by pulling it up or down
+- Releasing the handle snaps the panel to a compact size (35vh) or full size (72vh)
+- Dragging it almost completely off the bottom of the screen closes it
+
+**Deep Dive page on mobile:**
+- The graph and the story panel stack vertically — graph on top (45vh), panel below (55vh)
+- The "His-story" header is hidden on mobile to give the graph the full space it needs
+- The navigation buttons (← Graph, ← Previous) stay pinned to the top-left
+
+---
+
 ## Possible Next Steps
 
 - Search / filter stories by name or theme
 - Toggle entire eras on and off
-- Mobile-friendly layout
 - Text-to-speech narration of story summaries
 - Expand beyond 48 stories to include Psalms, Proverbs, minor prophets, and more
